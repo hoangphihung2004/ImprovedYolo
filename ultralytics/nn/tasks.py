@@ -1687,7 +1687,15 @@ def yaml_model_load(path):
         LOGGER.warning(f"Ultralytics YOLO P6 models now use -p6 suffix. Renaming {path.stem} to {new_stem}.")
         path = path.with_name(new_stem + path.suffix)
 
+    # Support both yolov8s.yaml -> yolov8.yaml and customYoloV8s.yaml -> customYoloV8.yaml
     unified_path = re.sub(r"(\d+)([nslmx])(.+)?$", r"\1\3", str(path))  # i.e. yolov8x.yaml -> yolov8.yaml
+    # Also handle customYoloV8s.yaml -> customYoloV8.yaml
+    if unified_path == str(path):  # If first regex didn't match, try custom pattern
+        path_str = str(path)
+        # Extract suffix and base path
+        match = re.search(r"(customYoloV8)([nslmx])(\.yaml)?$", path_str)
+        if match:
+            unified_path = match.group(1) + (match.group(3) or ".yaml")
     yaml_file = check_yaml(unified_path, hard=False) or check_yaml(path)
     d = YAML.load(yaml_file)  # model dict
     d["scale"] = guess_model_scale(path)
@@ -1705,7 +1713,15 @@ def guess_model_scale(model_path):
         (str): The size character of the model's scale (n, s, m, l, or x).
     """
     try:
-        return re.search(r"yolo(e-)?[v]?\d+([nslmx])", Path(model_path).stem).group(2)
+        # Try standard YOLO pattern first (yolov8s, yoloe-v8s, etc.)
+        match = re.search(r"yolo(e-)?[v]?\d+([nslmx])", Path(model_path).stem)
+        if match:
+            return match.group(2)
+        # Try customYoloV8 pattern (customYoloV8s, customYoloV8m, etc.)
+        match = re.search(r"customYoloV8([nslmx])", Path(model_path).stem)
+        if match:
+            return match.group(1)
+        return ""
     except AttributeError:
         return ""
 
