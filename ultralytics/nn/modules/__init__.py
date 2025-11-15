@@ -75,6 +75,9 @@ from .conv import (
     LightConv,
     RepConv,
     SpatialAttention,
+    Involution,
+    Involution2d,
+    ConvInvolution
 )
 from .head import (
     OBB,
@@ -179,4 +182,7 @@ __all__ = (
     "YOLOEDetect",
     "YOLOESegment",
     "v10Detect",
+    "Involution",
+    "Involution2d",
+    "ConvInvolution"
 )

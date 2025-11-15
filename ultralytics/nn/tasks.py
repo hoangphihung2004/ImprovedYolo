@@ -68,6 +68,9 @@ from ultralytics.nn.modules import (
     YOLOEDetect,
     YOLOESegment,
     v10Detect,
+    Involution,
+    Involution2d,
+    ConvInvolution
 )
 from ultralytics.utils import DEFAULT_CFG_DICT, LOGGER, YAML, colorstr, emojis
 from ultralytics.utils.checks import check_requirements, check_suffix, check_yaml
@@ -1553,6 +1556,9 @@ def parse_model(d, ch, verbose=True):
             SCDown,
             C2fCIB,
             A2C2f,
+            Involution,
+            Involution2d,
+            ConvInvolution
         }
     )
     repeat_modules = frozenset(  # modules with 'repeat' arguments
@@ -1639,6 +1645,12 @@ def parse_model(d, ch, verbose=True):
             args = [c1, c2, *args[1:]]
         elif m is CBFuse:
             c2 = ch[f[-1]]
+        elif m is Involution2d:
+            # Involution2d requires in_channels, out_channels as first two args
+            c1, c2 = ch[f], args[0] if len(args) > 0 else ch[f]
+            if c2 != nc:  # if c2 not equal to number of classes
+                c2 = make_divisible(min(c2, max_channels) * width, 8)
+            args = [c1, c2, *args[1:]] if len(args) > 0 else [c1, c2]
         elif m in frozenset({TorchVision, Index}):
             c2 = args[0]
             c1 = ch[f]
