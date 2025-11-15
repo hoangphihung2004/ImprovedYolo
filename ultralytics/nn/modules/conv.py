@@ -191,7 +191,7 @@ class Involution(nn.Module):
 
     default_act = nn.SiLU()  # default activation
 
-    def __init__(self, c1, c2, k=7, s=1, p=3, g=1, d=1, act=True):
+    def __init__(self, c1, c2, k=7, s=1, p=None, g=1, d=1, act=True):
         """Initialize Conv layer with given parameters.
 
         Args:
@@ -239,7 +239,7 @@ class ConvInvolution(nn.Module):
         super().__init__()
 
         self.conv = Conv(c1=c1, c2=c2, k=k, s=s, p=p, g=g, d=d, act=act)
-        self.invo = Involution(c1=c1, c2=c2, k=7, s=2 if c2 >= c1 else 1, p=3, g=g, d=d, act=act)
+        self.invo = Involution(c1=c1, c2=c2, k=7, s=2 if c2 >= c1 else 1, p=None, g=g, d=d, act=act)
 
     def forward(self, x):
         """Apply convolution and involution to input tensor."""
