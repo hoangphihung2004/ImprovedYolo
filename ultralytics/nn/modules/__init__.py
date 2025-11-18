@@ -66,18 +66,18 @@ from .conv import (
     Concat,
     Conv,
     Conv2,
+    ConvInvolution,
     ConvTranspose,
     DWConv,
     DWConvTranspose2d,
     Focus,
     GhostConv,
     Index,
+    Involution,
+    Involution2d,
     LightConv,
     RepConv,
     SpatialAttention,
-    Involution,
-    Involution2d,
-    ConvInvolution
 )
 from .head import (
     OBB,
@@ -144,6 +144,7 @@ __all__ = (
     "ContrastiveHead",
     "Conv",
     "Conv2",
+    "ConvInvolution",
     "ConvTranspose",
     "DWConv",
     "DWConvTranspose2d",
@@ -157,6 +158,8 @@ __all__ = (
     "HGStem",
     "ImagePoolingAttn",
     "Index",
+    "Involution",
+    "Involution2d",
     "LRPCHead",
     "LayerNorm2d",
     "LightConv",
@@ -182,7 +185,4 @@ __all__ = (
     "YOLOEDetect",
     "YOLOESegment",
     "v10Detect",
-    "Involution",
-    "Involution2d",
-    "ConvInvolution"
 )
