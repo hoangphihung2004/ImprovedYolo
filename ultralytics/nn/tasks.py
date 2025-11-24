@@ -42,6 +42,7 @@ from ultralytics.nn.modules import (
     Concat,
     Conv,
     Conv2,
+    ConvInvolution,
     ConvTranspose,
     Detect,
     DWConv,
@@ -53,6 +54,8 @@ from ultralytics.nn.modules import (
     HGStem,
     ImagePoolingAttn,
     Index,
+    Involution,
+    Involution2d,
     LRPCHead,
     Pose,
     RepC3,
@@ -68,9 +71,6 @@ from ultralytics.nn.modules import (
     YOLOEDetect,
     YOLOESegment,
     v10Detect,
-    Involution,
-    Involution2d,
-    ConvInvolution
 )
 from ultralytics.utils import DEFAULT_CFG_DICT, LOGGER, YAML, colorstr, emojis
 from ultralytics.utils.checks import check_requirements, check_suffix, check_yaml
@@ -1558,7 +1558,7 @@ def parse_model(d, ch, verbose=True):
             A2C2f,
             Involution,
             Involution2d,
-            ConvInvolution
+            ConvInvolution,
         }
     )
     repeat_modules = frozenset(  # modules with 'repeat' arguments
